@@ -16,3 +16,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+jsconfig.json
+prettier.config.js
+vetur.config.js
+
