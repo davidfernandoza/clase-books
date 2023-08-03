@@ -11,14 +11,13 @@ class UserController extends Controller
 	public function index(Request $request)
 	{
 		$users = User::get();
-		if (!$request->ajax()) return view();
+		if (!$request->ajax()) return view('users.index', compact('users'));
 		return response()->json(['users' => $users], 200);
 	}
 
-
 	public function create()
 	{
-		// view
+		return view('users.create');
 	}
 
 
@@ -31,15 +30,9 @@ class UserController extends Controller
 	}
 
 
-	public function show(Request $request, User $user)
+	public function edit(User $user)
 	{
-		if (!$request->ajax()) return view();
-		return response()->json(['user' => $user], 200);
-	}
-
-	public function edit($id)
-	{
-		// View
+		return view('users.edit', compact('user'));
 	}
 
 
