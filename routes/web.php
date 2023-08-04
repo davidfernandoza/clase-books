@@ -12,7 +12,7 @@ Route::get('/', [BookController::class, 'index']);
 Route::group(['middleware' => ['auth']], function () {
 	Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-	Route::group(['prefix' => 'users'], function () {
+	Route::group(['prefix' => 'users', 'middleware' => ['role:admin']], function () {
 		Route::get('/', [UserController::class, 'index'])->name('users.index');
 		Route::get('/create', [UserController::class, 'create'])->name('users.create');
 		Route::post('/', [UserController::class, 'store'])->name('users.store');

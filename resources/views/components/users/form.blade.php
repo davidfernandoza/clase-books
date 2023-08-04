@@ -1,7 +1,25 @@
 <section class="row">
+
+    <div class="mb-3 col-12">
+        <label for="role">Role</label>
+
+        <select id="role" type="number" name="role" class="form-control @error('role') is-invalid @enderror">
+            @foreach ($roles as $role)
+                <option value="{{ $role }}">{{ $role }}</option>
+            @endforeach
+        </select>
+
+        @error('role')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+    </div>
+
     <div class="mb-3 col-6">
         <label for="number_id">Cedula</label>
-        <input id="number_id" type="number" name="number_id" class="form-control @error('number_id') is-invalid @enderror"
+        <input id="number_id" type="number" name="number_id"
+            class="form-control @error('number_id') is-invalid @enderror"
             value="{{ old('number_id') ? old('number_id') : (isset($user) ? $user->number_id : '') }}" />
         @error('number_id')
             <span class="invalid-feedback" role="alert">
@@ -9,7 +27,6 @@
             </span>
         @enderror
     </div>
-
     <div class="mb-3 col-6">
         <label for="name">Nombre</label>
         <input id="name" type="text" name="name" class="form-control @error('name') is-invalid @enderror"

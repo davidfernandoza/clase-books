@@ -8,9 +8,9 @@
                 <form action="{{ route('users.update', ['user' => $user->id]) }}" method="POST">
                     @csrf
                     @method('PUT')
-                    <x-users.form :user="$user" />
+                    <x-users.form :user="$user" :roles="$roles" />
                 </form>
             </div>
-        </div>
     </section>
+    </div>
 </x-app>
