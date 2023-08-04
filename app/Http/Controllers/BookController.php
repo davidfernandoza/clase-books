@@ -7,10 +7,16 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-	public function index()
+	public function home()
 	{
 		$books = Book::get();
 		return view('index', compact('books'));
+	}
+
+	public function index()
+	{
+		$books = Book::with('author', 'category')->get();
+		return view('books.index', compact('books'));
 	}
 
 

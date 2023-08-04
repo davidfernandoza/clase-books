@@ -34,7 +34,7 @@ class UserRequest extends FormRequest
 		}
 
 		if ($this->path() != 'api/register') {
-			$rules['role'] = ['required', 'string', 'in:user,admin'];
+			$rules['role'] = ['required', 'string', 'in:user,admin,librarian'];
 		}
 
 		return $rules;
