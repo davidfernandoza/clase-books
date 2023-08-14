@@ -8,8 +8,10 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 
+				<backend-error :errors="back_errors" />
+
 				<!-- Formulario -->
-				<Form @submit="saveBook" :validation-schema="schema">
+				<Form @submit="saveBook" :validation-schema="schema" ref="form">
 					<div class="modal-body">
 						<section class="row">
 
@@ -18,8 +20,10 @@
 								<label for="title">Titulo</label>
 								<Field name="title" v-slot="{ errorMessage, field }" v-model="book.title">
 									<input type="text" id="title" v-model="book.title"
-										:class="`form-control ${errorMessage ? 'is-invalid' : ''}`" v-bind="field">
+										:class="`form-control ${errorMessage || back_errors['title'] ? 'is-invalid' : ''}`"
+										v-bind="field">
 									<span class="invalid-feedback">{{ errorMessage }}</span>
+									<span class="invalid-feedback">{{ back_errors['title'] }}</span>
 								</Field>
 							</div>
 
@@ -90,10 +94,20 @@
 
 import { Field, Form } from 'vee-validate'
 import * as yup from 'yup';
+import { successMessage, handlerErrors } from '@/helpers/Alerts.js'
 
 export default {
-	props: ['authors_data'],
+	props: ['authors_data', 'book_data'],
 	components: { Field, Form },
+	watch: {
+		book_data(new_value) {
+			this.book = { ...new_value }
+			if (!this.book.id) return
+			this.is_create = false
+			this.author = this.book.author_id
+			this.category = this.book.category_id
+		}
+	},
 	computed: {
 		schema() {
 			return yup.object({
@@ -112,7 +126,8 @@ export default {
 			author: null,
 			category: null,
 			categories_data: [],
-			load_category: false
+			load_category: false,
+			back_errors: {}
 		}
 	},
 	created() {
@@ -127,11 +142,11 @@ export default {
 			try {
 				this.book.category_id = this.category
 				this.book.author_id = this.author
-				await axios.post('/books', this.book)
-				await Swal.fire('success', 'Felicidades')
-				this.$parent.closeModal()
+				if (this.is_create) await axios.post('/books', this.book)
+				else await axios.put(`/books/${this.book.id}`, this.book)
+				await successMessage({ reload: true })
 			} catch (error) {
-				console.error(error);
+				this.back_errors = await handlerErrors(error)
 			}
 		},
 		async getCategories() {
@@ -140,9 +155,19 @@ export default {
 				this.categories_data = categories
 				this.load_category = true
 			} catch (error) {
-				console.error(error);
+				await handlerErrors(error)
 			}
 		},
+		reset() {
+			this.is_create = true
+			this.book = {}
+			this.author = null
+			this.category = null
+			this.$parent.book = {}
+			this.back_errors = {}
+			setTimeout(() => this.$refs.form.resetForm(), 100);
+
+		}
 
 	}
 }

@@ -26,11 +26,10 @@ Route::group(['middleware' => ['auth']], function () {
 	// Books
 	Route::group(['prefix' => 'books', 'controller' => BookController::class], function () {
 		Route::get('/', 'index')->name('books.index')->middleware('can:books.index');
-		Route::get('/create', 'create')->name('books.create')->middleware('can:books.create');
+		Route::get('/show/{book}', 'show')->name('books.show')->middleware('can:books.show');
 		Route::post('/', 'store')->name('books.store')->middleware('can:books.store');
-		Route::get('/{user}/edit', 'edit')->name('books.edit')->middleware('can:books.edit');
-		Route::put('/{user}', 'update')->name('books.update')->middleware('can:books.update');
-		Route::delete('/{user}', 'destroy')->name('books.destroy')->middleware('can:books.destroy');
+		Route::put('/{book}', 'update')->name('books.update')->middleware('can:books.update');
+		Route::delete('/{book}', 'destroy')->name('books.destroy')->middleware('can:books.destroy');
 	});
 
 	// Category
