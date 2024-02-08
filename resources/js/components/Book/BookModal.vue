@@ -97,7 +97,7 @@
 					<!-- Buttons -->
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="sumbit" class="btn btn-primary">Almacenar</button>
+						<button type="submit" class="btn btn-primary">Almacenar</button>
 					</div>
 				</Form>
 			</div>
