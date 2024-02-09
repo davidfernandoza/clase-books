@@ -19,4 +19,4 @@ yarn-error.log
 jsconfig.json
 prettier.config.js
 vetur.config.js
-
+.php-cs-fixer.php

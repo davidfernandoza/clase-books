@@ -101,6 +101,7 @@
 					</div>
 				</Form>
 			</div>
+
 		</div>
 	</div>
 </template>
@@ -125,6 +126,9 @@ export default {
 		}
 	},
 	computed: {
+		/*
+			El schema debe de tener los mismos nombres de los campos que los Field en el HTML
+		*/
 		schema() {
 			return yup.object({
 				title: yup.string().required(),

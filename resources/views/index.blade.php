@@ -20,11 +20,14 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <div class="d-grid gap-2">
-                        <button class="btn btn-outline-success" type="button">
-                            Solicitar
-                        </button>
-                    </div>
+                    <form action="{{ route('lend.request', ['book' => $book->id]) }}" method="POST">
+                        @csrf
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-success" type="submit">
+                                Solicitar
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         @endforeach

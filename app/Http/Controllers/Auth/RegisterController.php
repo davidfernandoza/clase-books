@@ -10,26 +10,25 @@ use App\Http\Requests\User\UserRequest;
 use App\Providers\RouteServiceProvider;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Http\Requests\User\UserRegisterRequest;
 
 class RegisterController extends Controller
 {
+    use RegistersUsers;
 
+    protected $redirectTo = RouteServiceProvider::HOME;
 
-	use RegistersUsers;
+    public function __construct()
+    {
+        $this->middleware('guest');
+    }
 
-	protected $redirectTo = RouteServiceProvider::HOME;
-
-	public function __construct()
-	{
-		$this->middleware('guest');
-	}
-
-	public function register(UserRequest $request)
-	{
-		$user = new User($request->all());
-		$user->save();
-		$user->assignRole('user');
-		Auth::login($user);
-		return redirect($this->redirectPath());
-	}
+    public function register(UserRegisterRequest $request)
+    {
+        $user = new User($request->all());
+        $user->save();
+        $user->assignRole('user');
+        Auth::login($user);
+        return redirect($this->redirectPath());
+    }
 }
