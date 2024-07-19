@@ -6,13 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
 {
-    protected $rules = [
-        'name' => ['required', 'string'],
-        'last_name' => ['required', 'string'],
-        'number_id' => ['required', 'numeric', 'unique:users,number_id'],
-        'email' => ['required', 'email', 'unique:users,email'],
-        'password' => ['required', 'confirmed', 'string', 'min:8'],
-    ];
+
 
     protected $messages = [
         'name.required' => 'Los nombres son requeridos.',
@@ -46,15 +40,27 @@ class UserRequest extends FormRequest
 
     public function rules()
     {
+
+		$rules = [
+			'name' => ['required', 'string'],
+			'last_name' => ['required', 'string'],
+			'number_id' => ['required', 'numeric', 'unique:users,number_id'],
+			'email' => ['required', 'email', 'unique:users,email'],
+			'password' => ['required', 'confirmed', 'string', 'min:8'],
+		];
+
         if ($this->method() == 'PUT') {
-            $this->rules['number_id'] = ['required', 'numeric', 'unique:users,number_id,' . $this->user->id];
-            $this->rules['email'] = ['required', 'email', 'unique:users,email,' . $this->user->id];
-            $this->rules['password'] = ['nullable', 'confirmed', 'string', 'min:8'] ;
+            $rules['number_id'] = ['required', 'numeric', 'unique:users,number_id,' . $this->user->id];
+            $rules['email'] = ['required', 'email', 'unique:users,email,' . $this->user->id];
+            $rules['password'] = ['nullable', 'confirmed', 'string', 'min:8'] ;
         }
+
+
+
         if ($this->path() != 'api/register') {
-            $this->rules['role'] = ['required', 'string', 'in:user,admin,librarian'];
+            $rules['role'] = ['required', 'string', 'in:user,admin,librarian'];
         }
-        return $this->rules;
+        return $rules;
     }
 
     public function messages()
